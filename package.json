@@ -1,0 +1,17 @@
+{
+  "name": "mongodb-tut",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon --exec \"mocha -R min\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^10.2.0",
+    "mongoose": "^7.3.1"
+  }
+}
