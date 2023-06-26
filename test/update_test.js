@@ -4,7 +4,7 @@ import User from '../src/user.js';
 describe('Updating record', () => {
   let joe;
   beforeEach((done) => {
-    joe = new User({ name: 'Joe', postCount: 0 });
+    joe = new User({ name: 'Joe', likes: 0 });
     joe.save().then(() => done());
   });
 
@@ -39,11 +39,12 @@ describe('Updating record', () => {
     assertName(User.findByIdAndUpdate(joe._id, { name: 'Alex' }), done);
   });
 
-  it('A user can have thier postcount increment by 1', (done) => {
-    User.updateMany({ name: 'Joe' }, { $inc: { postCount: 1 } })
+  // x can be used to temp pause the test
+  it('A user can have thier likes increment by 1', (done) => {
+    User.updateMany({ name: 'Joe' }, { $inc: { likes: 10 } })
       .then(() => User.findOne({ name: 'Joe' }))
       .then((user) => {
-        assert(user.postCount === 1);
+        assert(user.likes === 10);
         done();
       });
   });
