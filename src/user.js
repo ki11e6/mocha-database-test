@@ -21,8 +21,18 @@ const UserSchema = new Schema({
   ],
 });
 
+//adding virtual type to the model which will not be stored in mongodb
+//this basically create a function to count the number of posts
 UserSchema.virtual('postCount').get(function () {
   return this.posts.length;
+});
+
+//creating a middlware
+//when user is deleted all associated posts will be deleted
+UserSchema.pre('deleteOne', { document: true }, function (next) {
+  const BlogPost = mongoose.model('blogPost');
+  // this === joe
+  BlogPost.deleteMany({ _id: { $in: this.blogPosts } }).then(() => next());
 });
 
 const User = mongoose.model('user', UserSchema);
