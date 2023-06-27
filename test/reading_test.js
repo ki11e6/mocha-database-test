@@ -2,10 +2,15 @@ import assert from 'assert';
 import User from '../src/user.js';
 
 describe('Reading users out of the database', () => {
-  let joe;
+  let joe, maria, alex, zach;
   beforeEach((done) => {
     joe = new User({ name: 'Joe' });
-    joe.save().then(() => done());
+    alex = new User({ name: 'Alex' });
+    maria = new User({ name: 'Maria' });
+    zach = new User({ name: 'Zach' });
+    Promise.all([joe.save(), alex.save(), maria.save(), zach.save()]).then(() =>
+      done()
+    );
   });
 
   it('finds all the users with name of joe', () => {
@@ -20,5 +25,18 @@ describe('Reading users out of the database', () => {
       assert(user.name === 'Joe');
       done();
     });
+  });
+
+  it('can skip and limit the resutl set', (done) => {
+    User.find({})
+      .sort({ name: 1 })
+      .skip(1)
+      .limit(2)
+      .then((users) => {
+        assert(users.length === 2);
+        assert(users[0].name === 'Joe');
+        assert(users[1].name === 'Maria');
+        done();
+      });
   });
 });
